@@ -39,7 +39,7 @@ else
     $supp = $_POST['supp'];
 	
 	echo '<form action="" method="post" id="frmview" name="frmview">';
-		echo '<table border="0" cellpadding="2" cellspacing="0" width="100%" style="font-size=13pt">';
+		echo '<table cellpadding="2" cellspacing="0" width="100%" style="font-size=13pt">';
 			echo '<tr>';
 				echo '<td width="200px" style="font-weight:bold;">SUPPLIER CODE</td>';
 				echo '<td>: '. $supp .' </td>';
@@ -91,7 +91,23 @@ else
 				echo '<td style="font-weight:bold;">INVOICE NO</td>';
 				echo '<td>: <input type="text" name="invno" id="invno" maxlength="15"> </td>';
 			echo '</tr>';
-			
+			echo '<tr>';
+				echo '<td colspan = "2" style="font-weight:bold;" width="200px">------------------------------------------------------------------------</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan = "2" style="font-weight:bold;">------------------------ CRITICAL PART -----------------------</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan = "2" style="font-weight:bold;" width="200px">------------------------------------------------------------------------</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td width="200px" style="font-weight:bold;">PROD. DATE</td>';
+				echo '<td>: <input type="date" name="proddate" id="proddate"> </td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td style="font-weight:bold;">LOT NO SUPPLIER</td>';
+				echo '<td>: <input type="text" name="lotnosupp" id="lotnosupp" maxlength="20"> </td>';
+			echo '</tr>';
 			echo '<tr>';
 				echo '<td> <input type="hidden" value="' . $suppname . '" id="suppname" name="suppname">';
 				echo ' <input type="hidden" value="' . $supp . '" id="suppcode" name="suppcode"> </td>';

@@ -18,6 +18,10 @@
     $po     	= $_REQUEST['po'];
     $qty    	= $_REQUEST['qty'];
     $invno    	= $_REQUEST['invno'];
+     //--critical part--
+    $proddate 	= $_REQUEST['proddate'];
+    $lotnosupp	= $_REQUEST['lotnosupp'];
+	//-----------------
 
 	$rs = $db->Execute("select suppname from supplier where suppcode = '".$suppcode."'");
 	$suppname = $rs->fields[0];
@@ -94,6 +98,24 @@
 			echo '<td>: '. strtoupper($sts_inspection) .' </td>';
 		echo '</tr>';
 		
+		echo '<tr>';
+			echo '<td colspan="2">&nbsp;</td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td colspan="2">-------------------- CRITICAL PART --------------------</td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td style="font-weight:bold;">PROD. DATE</td>';
+			echo '<td>: '. $proddate .' </td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td style="font-weight:bold;">LOT NO SUPPLIER</td>';
+			echo '<td>: '. $lotnosupp .' </td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td colspan="2">---------------------------------------------------------------</td>';
+		echo '</tr>';
+
 		
 		$label 		= 0;
 		$label 		= intval($qty / $pack);
@@ -108,9 +130,9 @@
 	
 
 
-	echo '<a href="receiving128/brcpreview.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection . '">Print SATO Label 128</a></td>';
+	echo '<a href="receiving128/brcpreview.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection .'&proddate=' . $proddate .'&lotnosupp=' . $lotnosupp . '">Print SATO Label 128</a></td>';
 	echo '<br>';
-	echo '<a href="receivingqr/brcpreview_unix.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection . '">Print SATO Label QRCode</a></td>';
+	echo '<a href="receivingqr/brcpreview_unix.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection .'&proddate=' . $proddate .'&lotnosupp=' . $lotnosupp . '">Print SATO Label QRCode</a></td>';
 	echo '<br>';
 
 	$nt2->close();

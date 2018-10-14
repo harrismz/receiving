@@ -149,7 +149,7 @@
 
 				defaults	: {
 					anchor		: '100%',
-					allowBlank	: false,
+					//allowBlank	: false,
 					msgTarget	: 'side',
 					labelWidth	: 150,
 					labelStyle	: 'font-weight:bold'
@@ -255,7 +255,46 @@
 						allowBlank			: false,
 						afterLabelTextTpl	: required,
 						maxlength			: 15
+					}, 
+					{
+						xtype:'fieldset',
+				        columnWidth: 0.5,
+				        title: 'CRITICAL PART',
+				        collapsible: true,
+				        defaultType: 'textfield',
+				        defaults: {anchor: '100%'},
+				        defaults	: {
+							anchor		: '100%',
+							//allowBlank	: false,
+							msgTarget	: 'side',
+							labelWidth	: 140,
+							labelStyle	: 'font-weight:bold'
+						},
+				        layout: 'anchor',
+				        items :[{
+							xtype				: 'datefield',
+							id					: 'proddate',
+							name				: 'proddate',
+							fieldLabel			: 'Prod. Date',
+							allowBlank			: true,
+							format				: 'Y-m-d',
+							maxlength			: 15,
+							listeners: {
+								select: function() {
+									//console.log(this.rawValue);
+									return this.rawValue;
+								}
+							}
+						}, {
+							xtype				: 'textfield',
+							id					: 'lotnosupp',
+							name				: 'lotnosupp',
+							fieldLabel			: 'Lot No. Supplier',
+							allowBlank			: true,
+							maxlength			: 20
+						}]
 					}
+											
 				],
 
 				buttons: [
@@ -268,11 +307,13 @@
 							var po 			= Ext.getCmp('po').getValue();
 							var qty 		= Ext.getCmp('qty').getValue();
 							var invno 		= Ext.getCmp('invno').getValue();
+							var proddate	= Ext.getCmp('proddate').getRawValue();
+							var lotnosupp	= Ext.getCmp('lotnosupp').getValue();
 							//location.target = "_blank";
 							//location.href = 'brcview_new.php?part='+part+'&suppcode='+suppcode+'&po='+po+'&qty='+qty+'&invno='+invno+'';
 
 							if(po.length == 7){
-								window.open('brcview_new_unix.php?part='+part+'&suppcode='+suppcode+'&po='+po+'&qty='+qty+'&invno='+invno+'');
+								window.open('brcview_new_unix.php?part='+part+'&suppcode='+suppcode+'&po='+po+'&qty='+qty+'&invno='+invno+'&proddate='+proddate+'&lotnosupp='+lotnosupp+'');
 							}
 							else{
 								Ext.Msg.show({

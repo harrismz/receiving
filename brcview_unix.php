@@ -7,6 +7,9 @@
 	****	modify by Harris
 	****	on 28 Feb 2018
 	****	revise: qrcode unique
+	****	on 16 August 2018
+	****	revise: add critical part category
+	
 	*/
 ?>
 <html>
@@ -24,12 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST')
 else
   {
     $partno 	= trim($_POST['part']);
-	  $suppname = trim($_POST['suppname']);
-	  $suppcode = trim($_POST['suppcode']);
+	$suppname 	= trim($_POST['suppname']);
+	$suppcode 	= trim($_POST['suppcode']);
     $po     	= $_POST['po'];
     $qty    	= $_POST['qty'];
-    $invno    = $_POST['invno'];
-
+    $invno    	= $_POST['invno'];
+    //--critical part--
+    $proddate 	= $_POST['proddate'];
+    $lotnosupp	= $_POST['lotnosupp'];
+	//-----------------
 	$rs4 = $db_qrinvoice->Execute("select case imincl when '1' then 'Direct' else 'Inspection' end as sts_insp from sa96t where iprod = '". $partno ."'");
 	$sts_inspection = $rs4->fields[0];
 	$rs4->Close();
@@ -59,7 +65,7 @@ else
 			echo '<td style="font-weight:bold;">INVOICE NO</td>';
 			echo '<td>: '. $invno .' </td>';
 		echo '</tr>';
-
+		
 		//	cari stdpacking dan lokasi
 		$sql = "select * from stdpack where suppcode = '{$suppcode}' and partnumber= '{$partno}'";
 		$nt = $db->Execute($sql);
@@ -100,7 +106,26 @@ else
 			echo '<td width="200px" style="font-weight:bold;">STATUS INSPECTION</td>';
 			echo '<td>: '. strtoupper($sts_inspection) .' </td>';
 		echo '</tr>';
-		
+		echo '<tr>';
+			echo '<td colspan="2">&nbsp;</td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td colspan="2">-------------------- CRITICAL PART --------------------</td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td style="font-weight:bold;">PROD. DATE</td>';
+			echo '<td>: '. $proddate .' </td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td style="font-weight:bold;">LOT NO SUPPLIER</td>';
+			echo '<td>: '. $lotnosupp .' </td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td colspan="2">---------------------------------------------------------------</td>';
+		echo '</tr>';
+
+
+
 		$label 		= 0;
 		$label 		= intval($qty / $pack);
 		$sisa  		= $qty % $pack;
@@ -122,7 +147,7 @@ else
 
 	echo '<a href="receiving128/brcpreview.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection . '">Print SATO Label 128</a></td>';
 	echo '<br>';
-	echo '<a href="receivingqr/brcpreview_unix.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection . '">Print SATO Label QRCode</a></td>';
+	echo '<a href="receivingqr/brcpreview_unix.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection . '&proddate=' . $proddate . '&lotnosupp=' . $lotnosupp . '">Print SATO Label QRCode</a></td>';
 	echo '<br>';
 
 	$host		= getenv("REMOTE_ADDR");
