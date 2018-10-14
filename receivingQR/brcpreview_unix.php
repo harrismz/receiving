@@ -73,6 +73,10 @@
 		$supp 			= $_GET['supp'];
 		$invno 			= $_GET['invno'];
 		$sts_inspection = strtoupper($_GET['stsinsp']);
+		//--critical part--
+		$proddate		= $_GET['proddate'];
+		$lotnosupp		= strtoupper($_GET['lotnosupp']);
+		//-----------------
 		$host		= getenv("REMOTE_ADDR");
 		
 		echo '<table border="0" cellpadding="5" cellspacing="0" width="100%" style="font-weight:bold; font-size=18pt">';
@@ -115,6 +119,24 @@
 				echo '<td>Status Inspection</td>';
 				echo '<td>: ' . $sts_inspection .'</td>';
 			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="2">&nbsp;</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="2">------------------- CRITICAL PART -------------------</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>Prod. Date</td>';
+				echo '<td>: ' . $proddate .'</td>';
+			echo '</tr>';
+
+			echo '<tr>';
+				echo '<td>Lot No Supplier</td>';
+				echo '<td>: ' . $lotnosupp .'</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="2">---------------------------------------------------------------</td>';
+			echo '</tr>';
 			
 			echo '<tr>';
 				if( $qtybal != 0){
@@ -133,7 +155,7 @@
 			
 			echo '<tr>';
 				echo '<td style="color:#0000ff" colspan="2">';
-					echo '<a href="brcprint_unix.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection . '">Print SATO Label</a>';
+					echo '<a href="brcprint_unix.php?partno='. $partno .'&po='. $po .'&suppname='. $suppname .'&pack='. $pack .'&qtystd='. $qtystd .'&qtybal='. $qtybal .'&qty='. $qty .'&lokasi='. $lokasi .'&supp='. $supp .'&invno='. $invno .'&suppcode='. $suppcode .'&stsinsp=' . $sts_inspection . '&proddate=' . $proddate . '&lotnosupp=' . $lotnosupp . '">Print SATO Label</a>';
 				echo '</td>';
 			echo '</tr>';
 		echo '</table>';

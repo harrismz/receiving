@@ -8,9 +8,9 @@
 <html>
 	<title>Barcode Print Supplier Select</title>
 
-	<link rel="stylesheet" type="text/css" href="../extjs-4.1.1/resources/css/ext-all.css"/>
-    <link rel="stylesheet" type="text/css" href="../extjs-4.1.1/examples/shared/example.css" />
-    <script type="text/javascript" src="../extjs-4.1.1/ext-all.js"></script>
+	<link rel="stylesheet" type="text/css" href="../framework/extjs-4.1.1/resources/css/ext-all.css"/>
+    <link rel="stylesheet" type="text/css" href="../framework/extjs-4.1.1/examples/shared/example.css" />
+    <script type="text/javascript" src="../framework/extjs-4.1.1/ext-all.js"></script>
 	<style type="text/css">
 		/* style rows on mouseover */
 		.x-grid-row-over .x-grid-cell-inner {

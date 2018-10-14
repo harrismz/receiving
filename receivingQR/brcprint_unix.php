@@ -116,6 +116,58 @@
 			break;
 			default:
 		}
+		
+		$proddate2   = $_GET['proddate'];
+		$proddate1   = "";
+		$proddate    = "";
+		if($proddate2 !== ""){
+			$proddate = date('Ymd', strtotime($_GET['proddate']));
+			$proddate1 = date('Ymd', strtotime($_GET['proddate']));
+		}
+		else{
+			$proddate = "";
+			$proddate1 = "";
+		}
+		$pjgproddate = strlen($proddate);
+		switch ($pjgproddate)
+		{
+			case 0:
+			$proddate1 .= '        ';
+			break;
+			case 1:
+			$proddate1 .= '       ';
+			break;
+			case 2:
+			$proddate1 .= '      ';
+			break;
+			case 3:
+			$proddate1 .= '     ';
+			break;
+			case 4:
+			$proddate1 .= '    ';
+			case 5:
+			$proddate1 .= '   ';
+			case 6:
+			$proddate1 .= '  ';
+			case 7:
+			$proddate1 .= ' ';
+			break;
+			default:
+		}
+
+		$lotnosupp  = $_GET['lotnosupp'];
+		$pjglotnosupp = strlen($lotnosupp);
+		$lotnosuppSplit1 = "";
+		$lotnosuppSplit2 = "";
+		if($pjglotnosupp > 10)
+		{
+			$lotnosuppSplit1 = substr($lotnosupp, 0,10);
+			$lotnosuppSplit2 = substr($lotnosupp, 10);
+		}
+		elseif($pjglotnosupp <= 10){
+			$lotnosuppSplit1 = substr($lotnosupp, 0,10);
+		}
+
 
 		$suppcode 	= $_GET['suppcode'];
 		$suppname 	= $_GET['suppname'];
@@ -126,7 +178,17 @@
 		$lokasi 	= $_GET['lokasi'];
 		$supp 		= $_GET['supp'];
 		$invno 		= $_GET['invno'];
-		$stsinsp 	= strtoupper($_GET['stsinsp']);
+		$stsinsp2 	= strtoupper($_GET['stsinsp']);
+		$stsinsp    = "";
+		if($stsinsp2==="INSPECTION"){
+			$stsinsp = "I";
+		}
+		else{
+			$stsinsp = "D";
+		}
+
+
+		
 
 
 		echo '<table border="0" cellpadding="5" cellspacing="0" width="100%" style="font-weight:bold; font-size=18pt">';
@@ -159,7 +221,7 @@
 				echo '<td>Standard Packing</td>';
 				echo '<td>: ' . $pack .'</td>';
 			echo '</tr>';
-
+			
 			echo '<tr>';
 				echo '<td>Location</td>';
 				echo '<td>: ' . $lokasi .'</td>';
@@ -167,7 +229,26 @@
 			
 			echo '<tr>';
 				echo '<td>Status Inspection</td>';
-				echo '<td>: ' . $stsinsp .'</td>';
+				echo '<td>: ' . $stsinsp .' ('.$stsinsp2.')</td>';
+			echo '</tr>';
+
+			echo '<tr>';
+				echo '<td colspan="2">&nbsp;</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="2">------------------- CRITICAL PART -------------------</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>Prod. Date</td>';
+				echo '<td>: ' . $proddate .'</td>';
+			echo '</tr>';
+
+			echo '<tr>';
+				echo '<td>Lot No Supplier</td>';
+				echo '<td>: ' . $lotnosupp .'</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="2">---------------------------------------------------------------</td>';
 			echo '</tr>';
 
 			echo '<tr>';
@@ -184,6 +265,7 @@
 					echo '<td style="color:#0000ff">: '. $qtylbl .'</td>';
 				}
 			echo '</tr>';
+			
 		echo '</table>';
 
 		if( $qtystd != 0){
@@ -230,18 +312,68 @@
 			
 				
 				
-				$barcode 	= $partno . ' ' . $po . ' ' . $pack . ' ' . $unique_unx[$j];
+				$barcode 	= $partno . ' ' . $po . ' ' . $pack . ' ' . $unique_unx[$j] . ' ' . $proddate1 . ' ' . $lotnosupp;
 				$esc = chr(27);
 				$data = '';
-				$data .= $esc . 'A';
-				$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
-				$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
-				$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
-				$data .= $esc . 'H0180' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
-				$data .= $esc . 'H0370' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $pack;
-				$data .= $esc . 'H0530' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
-				$data .= $esc . 'H0180' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
-				$data .= $esc . 'H0530' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . 'Type: ' . $stsinsp;
+
+				if($lotnosupp!=="" && $proddate===""){
+					$data .= $esc . 'A';
+					$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+					$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+					$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+					$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+					$data .= $esc . 'H0370' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $pack;
+					$data .= $esc . 'H0530' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+					
+					$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+					$data .= $esc . 'H0180' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+					$data .= $esc . 'H0420' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Code:';
+					$data .= $esc . 'H0500' . $esc . 'V0097' . $esc . 'L0202' . $esc . 'XS' . 'C';
+					$data .= $esc . 'H0540' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'LotNo.S:';
+					$data .= $esc . 'H0660' . $esc . 'V0095' . $esc . 'L0101' . $esc . 'M' . $lotnosuppSplit1;
+					$data .= $esc . 'H0660' . $esc . 'V0120' . $esc . 'L0101' . $esc . 'M' . $lotnosuppSplit2;
+				}
+				elseif($lotnosupp==="" && $proddate!==""){
+					$data .= $esc . 'A';
+					$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+					$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+					$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+					$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+					$data .= $esc . 'H0370' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $pack;
+					$data .= $esc . 'H0530' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+					$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+					$data .= $esc . 'H0180' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+					$data .= $esc . 'H0420' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Code:';
+					$data .= $esc . 'H0500' . $esc . 'V0097' . $esc . 'L0202' . $esc . 'XS' . 'C';
+					$data .= $esc . 'H0540' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'P.Date: ' . $proddate;
+
+				}
+				elseif($lotnosupp!=="" && $proddate!==""){
+					$data .= $esc . 'A';
+					$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+					$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+					$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+					$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+					$data .= $esc . 'H0370' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $pack;
+					$data .= $esc . 'H0530' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+					$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+					$data .= $esc . 'H0180' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+					$data .= $esc . 'H0420' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Code:';
+					$data .= $esc . 'H0500' . $esc . 'V0097' . $esc . 'L0202' . $esc . 'XS' . 'C';
+					$data .= $esc . 'H0540' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'P.Date: ' . $proddate;
+				}
+				else{
+					$data .= $esc . 'A';
+					$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+					$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+					$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+					$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+					$data .= $esc . 'H0370' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $pack;
+					$data .= $esc . 'H0530' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+					$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+					$data .= $esc . 'H0180' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+				}
+
 				//$data .= $esc . 'H0340' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . $unique_unx[$j];
 				//$data .= $esc . 'Q'. $qtystd .'';
 				$data .= $esc . 'Q1';
@@ -267,19 +399,66 @@
 			$printcode300 		= str_pad($k,6,"0", STR_PAD_LEFT);
 			$unique300   		= $srcdb300 . $supp300 . $partno_code300 . $datetime300 . $printcode300;
 	
-			$barcode 	= $partno . ' ' . $po . ' ' . $qtybal . ' ' . $unique300;
+			$barcode 	= $partno . ' ' . $po . ' ' . $qtybal . ' ' . $unique300 . ' ' . $proddate1 . ' ' . $lotnosupp;
 			$esc = chr(27);
 			$data = '';
-			$data .= $esc . 'A';
-			$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
-			$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
-			$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
-			$data .= $esc . 'H0180' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
-			$data .= $esc . 'H0370' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $qtybal;
-			$data .= $esc . 'H0530' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
-			$data .= $esc . 'H0180' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
-			$data .= $esc . 'H0530' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . 'Type: ' . $stsinsp;
-				//$data .= $esc . 'H0340' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . $unique300;
+			
+			if($lotnosupp!=="" && $proddate===""){
+				$data .= $esc . 'A';
+				$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+				$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+				$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+				$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+				$data .= $esc . 'H0370' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $qtybal;
+				$data .= $esc . 'H0530' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+				$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+				$data .= $esc . 'H0180' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+				$data .= $esc . 'H0420' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Code:';
+				$data .= $esc . 'H0500' . $esc . 'V0097' . $esc . 'L0202' . $esc . 'XS' . 'C';
+				$data .= $esc . 'H0540' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'LotNo.S:';
+				$data .= $esc . 'H0660' . $esc . 'V0095' . $esc . 'L0101' . $esc . 'M' . $lotnosuppSplit1;
+				$data .= $esc . 'H0660' . $esc . 'V0120' . $esc . 'L0101' . $esc . 'M' . $lotnosuppSplit2;
+			}
+			elseif($lotnosupp==="" && $proddate!==""){
+				$data .= $esc . 'A';
+				$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+				$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+				$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+				$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+				$data .= $esc . 'H0370' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $qtybal;
+				$data .= $esc . 'H0530' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+				$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+				$data .= $esc . 'H0180' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+				$data .= $esc . 'H0420' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Code:';
+				$data .= $esc . 'H0500' . $esc . 'V0097' . $esc . 'L0202' . $esc . 'XS' . 'C';
+				$data .= $esc . 'H0540' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'P.Date: ' . $proddate;
+			}
+			elseif($lotnosupp!=="" && $proddate!==""){
+				$data .= $esc . 'A';
+				$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+				$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+				$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+				$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+				$data .= $esc . 'H0370' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $qtybal;
+				$data .= $esc . 'H0530' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+				$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+				$data .= $esc . 'H0180' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+				$data .= $esc . 'H0420' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'Code:';
+				$data .= $esc . 'H0500' . $esc . 'V0097' . $esc . 'L0202' . $esc . 'XS' . 'C';
+				$data .= $esc . 'H0540' . $esc . 'V0100' . $esc . 'L0101' . $esc . 'M' . 'P.Date: ' . $proddate;
+			}
+			else{
+				$data .= $esc . 'A';
+				$data .= $esc . 'H0050' . $esc . 'V0020' . $esc . '2D30,L,03,0,0' . $esc . 'DS2,' . $barcode;
+				$data .= $esc . 'H0180' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . $partno;
+				$data .= $esc . 'H0500' . $esc . 'V0015' . $esc . 'L0202' . $esc . 'S' . 'Loc: ' . $lokasi;
+				$data .= $esc . 'H0180' . $esc . 'V0060' . $esc . 'L0101' . $esc . 'M' . 'PO: ' . $po;
+				$data .= $esc . 'H0370' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . $qtybal;
+				$data .= $esc . 'H0530' . $esc . 'V0073' . $esc . 'L0101' . $esc . 'M' . 'Supp: ' . $supp;
+				$data .= $esc . 'H0757' . $esc . 'V0055' . $esc . 'L0202' . $esc . 'XS' . '[' . $stsinsp . ']';
+				$data .= $esc . 'H0180' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . 'Invc: ' . $invno;
+			}
+			//$data .= $esc . 'H0340' . $esc . 'V0108' . $esc . 'L0101' . $esc . 'M' . $unique300;
 			$data .= $esc . 'Q1';
 			$data .= $esc . 'Z';
 			$handle3 = $data;
@@ -294,9 +473,14 @@
 		// ================= //
 
 		$cekip		= getenv("REMOTE_ADDR");
-		if($cekip == '10.230.37.150' || $cekip == '136.198.117.189' || $cekip == '10.230.37.119' || $cekip == '10.230.37.143'){
+		// list IP yang tidak dipakai 2018
+		//	10.230.37.150
+		//	136.198.117.189 =  untuk install di server
+		//	10.230.37.119
+
+		if($cekip == '10.230.37.143'){
 			//echo 'pake ip';
-			$host		= getenv("REMOTE_ADDR");
+			$host		= "MC15";
 			$myfile 	= fopen("\\\\$host\\PrintSato\\print_". $Ymd . $wkt .".txt", "w") or die("Unable to open file!");
 			$txt 		= $print;
 			fwrite($myfile, $txt);
@@ -304,7 +488,15 @@
 		}
 		elseif($cekip == '10.230.30.117'){
 			//echo 'pake ip';
-			$host		= 'newedp5';
+			$host		= "NEWEDP5";
+			$myfile 	= fopen("\\\\$host\\PrintSato\\print_". $Ymd . $wkt .".txt", "w") or die("Unable to open file!");
+			$txt 		= $print;
+			fwrite($myfile, $txt);
+			fclose($myfile);
+		}
+		elseif($cekip == '10.230.37.189'){
+			//echo 'pake ip';
+			$host		= "MC45_2";
 			$myfile 	= fopen("\\\\$host\\PrintSato\\print_". $Ymd . $wkt .".txt", "w") or die("Unable to open file!");
 			$txt 		= $print;
 			fwrite($myfile, $txt);
