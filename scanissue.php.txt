@@ -1,0 +1,189 @@
+<?php
+	include "koneksi.php";
+
+	$con = mssql_connect($_MSSQL[Host], $_MSSQL[User], $_MSSQL[Pass]) or die("Cant connect to database");
+	mssql_select_db($_MSSQL[DBNa], $con);
+
+	// mendapatkan waktu sistem...
+	$waktu =  getdate();
+	$jam = $waktu[hours];
+	$menit = $waktu[minutes];
+	$detik = $waktu[seconds];
+	$hari_ini = date(m.d.y);
+	$abad = '20';
+	$hari_thn = substr($hari_ini,4,2);
+	$tahun = $abad . $hari_thn;
+	$hari_bln = substr($hari_ini,0,2);
+	$hari_tgl = substr($hari_ini,2,2);
+	$tanggal = $abad . $hari_thn . "-" . $hari_bln . "-" . $hari_tgl;
+
+	$cjam = strlen($jam);
+	$cmenit = strlen($menit);
+	$cdetik = strlen($detik);
+	if($cjam == 1 )
+	{
+		$jam = "0" . $jam;
+	}
+	if($cmenit == 1)
+	{
+		$menit = "0" . $menit;
+	}
+	if($cdetik == 1)
+	{
+		$detik = "0" . $detik;
+	}
+
+	$tglins = $tanggal . ' ' . $jam . ':' . $menit . ':' . $detik;
+	echo "tanggal : " . $tglins . '<br />';
+
+?>
+<html>
+<head>
+<title>SCAN ISSUE</title>
+</head>
+
+<?php
+	if ($_SERVER['REQUEST_METHOD'] != 'POST')
+	{
+		echo "Silahkan Pilih SO NUMBER untuk memulai";
+		echo "<br />";
+	}
+	else  // jika hasil dari postingan .......
+	{
+		//$tipe = $_POST['scantype'];
+		$txtso = $_POST['so'];
+		$txtbarcode = strtoupper($_POST['parthdn']);
+		$varpart = trim(substr($txtbarcode,0,15));
+		$varpo = substr($txtbarcode,16,7);
+		$varqty  = substr($txtbarcode,24,5);
+		
+		echo 'SO : ' . $txtso . '&nbsp;&nbsp***';
+		// echo '<br />barcode : ' . $txtbarcode;
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PART NUMBER : ' . $varpart . '&nbsp;&nbsp;***';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PO : ' . $varpo . '&nbsp;&nbsp;***';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;QTY : ' . $varqty . '<br />';
+		// cek data di detailcsv...
+		// ---    form pindah ke sini.......
+
+		$sql_check = mssql_query("select * from sa90m where so = '$txtso'");
+		$row_check = mssql_fetch_row($sql_check);
+
+		if(!$row_check)
+		{
+			echo "<font size=6 color=red>SO Number Belum Terdaftar</font><br />";
+			return false;
+		}
+
+?>
+<hr>
+<?
+		if($txtbarcode != "")
+		{
+			echo '<h1>' . $txtso . '</h1>';
+			echo '<table border="1">';
+			echo '<tr>';
+			echo '<th><h2>PART.NO</h2></th>';
+			echo '<th><h2>PART NAME</h2></th>';
+			echo '<th><h2>REQ QTY</h2></th>';
+			echo '<th><h2>SCAN QTY</h2></th>';
+			echo '<th><h2>BOM</h2></th>';
+			echo '<th><h2>LOT</h2></th>';
+			echo '<th><h2>LINE</h2></th>';
+			echo '<th><h2>MODEL</h2></th>';
+			echo '</tr>';    
+
+
+			// cek part
+			// ralat : 02.april.2011 cek part tdk perlu pakai num_rows di sa90m
+			// sekaligus cek sewaktu menampilkan data group partno sesuai po
+			/*
+			$sqlso = "select * from sa90m where so = '$txtso'  and  partno = '$varpart'";
+			$rsso = mssql_query($sqlso,$con);
+			$cek_part = mssql_num_rows($rsso);
+			echo '<br />' . $cek_part;
+			*/     
+			
+			$cekpart = 0;
+	 
+			// ambil data dari GROUP PARTNO SESUAI SO    
+			//$sqlview = "select so,partno,partname,qty,scanqty,bom,lot,line,model from sa90m left join visspart on sa90m.partno = visspart.isspartno where sa90m.so = '$txtso'";
+		    $sqlview = "select sa90m.so,sa90m.partno,sa90m.partname,sa90m.qty,visspart.scanqty,sa90m.bom,sa90m.lot,sa90m.line,sa90m.model from sa90m left join visspart on  sa90m.so = visspart.issso and sa90m.partno = visspart.isspartno  where sa90m.so = '$txtso'";
+		    $rssoview = mssql_query($sqlview);
+			while ($row = mssql_fetch_array($rssoview))
+			{
+				//  echo  '<tr>';
+				//  echo  '<td>' . $row[1] . '</td><td>' . $row[2] . '</td><td align="right">' . $row[3] . '</td><td align="right">' . $row[4];
+				//  echo  '</tr>';
+				//echo '<br />';
+				//echo $row[1] . ',' . $row[2] . ',' . $row[3] . ',' . $row[4];
+				$partcek1 = $row[1];
+				if(trim($partcek1) == trim($varpart))
+				{
+					$nilainama = $row[2];
+					$nilaireq = $row[3];
+					$nilaiscan = $row[4];
+					$nilaibom = $row[5];
+					$nilailot = $row[6];
+					$nilailine = $row[7];
+					$nilaimodel = $row[8];
+					$cektotalqty = $nilaiscan + $varqty;
+					if($cektotalqty > $nilaireq)
+					{
+						$cekpart = 0;
+					}
+					else
+					{
+						$cekpart = 1;
+					}
+				}
+			} //while
+		
+			//echo 'nilai scan : ' . $cektotalqty;
+			echo 'status : ';
+
+			if ($cekpart == 0)
+			{
+				echo "<font size=6 color=red> Wrong Part Or QTY Over </font><br />";
+				$suara = 'mistake.wav';
+				echo "<embed src =\"$suara\" hidden=\"true\" autostart=\"true\"></embed>";
+			}
+			else
+			{
+				$suara = 'ok1.wav';
+				echo "<embed src =\"$suara\" hidden=\"true\" autostart=\"true\"></embed>";
+
+				echo " Part OK... Inserting Data <br />";
+				$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins')";
+				$hslins=mssql_query($sqlins,$con);
+			}
+
+
+			// tampilkan data
+			$sqlview = "select sa90m.so,sa90m.partno,sa90m.partname,sa90m.qty,visspart.scanqty,sa90m.bom,sa90m.lot,sa90m.line,sa90m.model from sa90m left join visspart on sa90m.so = visspart.issso and sa90m.partno = visspart.isspartno where sa90m.so = '$txtso'";
+			$rssoview = mssql_query($sqlview);
+			while ($row = mssql_fetch_array($rssoview))
+			{
+				echo  '<tr>';
+				echo  '<td>' . $row[1] . '</td><td>' . $row[2] . '</td><td align="right">' . $row[3] . '</td><td align="right">' . $row[4] . '</td>' ;
+				echo  '<td align="right">' . $row[5] . '</td><td>' . $row[6] . '</td><td>' . $row[7] . '</td><td>' . $row[8] . '</td><td>' . $row[9] . '</td>';
+				echo  '</tr>';
+				//echo '<br />';
+				//echo $row[1] . ',' . $row[2] . ',' . $row[3] . ',' . $row[4];
+				$partcek1 = $row[1];
+			}
+			
+			echo "</table>";
+		} //if	
+
+?>
+
+
+<br>
+<br>
+<br>
+</body>
+</html>
+
+<?php
+	} //else
+?>

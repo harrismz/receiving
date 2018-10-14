@@ -1,0 +1,6 @@
+@media only screen and (max-width:980px) and (min-width:571px){
+	.btn-android{
+		width: 50%;
+		border-radius: 0;
+	}
+}

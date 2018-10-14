@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="../jquery-2.1.4.min.js"></script>
+<script>
+$(document).ready(function(){
+  // set focus so number
+  $("#txtso").focus();
+  var isiso = $("#txtso").val();
+  $("#frmscan").submit(function(event)
+   {
+     event.preventDefault();
+     
+     if($("#txtso").val()=="")
+	  {
+	    alert("SO NUMBER KOSONG");
+	  }
+	   
+   });
+   $("#txtso").val(isiso);
+  
+});
+</script>
+</head>
+<body>
+<div>
+<form id="frmscan">
+<fieldset>
+<legend>Parts Issue to Production</legend>
+SO NUMBER : <input type="text" id="txtso" size="10">
+<br><br>
+BARCODE : <input type="text" id="txtbarc" size="30">
+<br><br>
+<input type="submit" value="SUBMIT">
+</fieldset>
+</form>
+</div>
+
+<div>
+
+</div>
+
+</body>
+</html>
