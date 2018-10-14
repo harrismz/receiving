@@ -1,0 +1,140 @@
+<?php
+
+
+/*
+
+koneksi tdk diperlukan di halaman ini
+
+include "koneksi.php";
+
+*/
+
+
+?>
+<html>
+<head>
+<title>MC ISSUE TO PRODUCTION SCAN</title>
+<script src='jquery/jquery-1.12.0.min.js'></script>
+<script type="text/javascript">
+/*window.onload = function scanissue(){
+	var nik1 = document.getElementById('nik1');
+	var idso1 = document.getElementById('idso1');
+	var idbarcode1 = document.getElementById('idbarcode1');
+	var parthdn1 = document.getElementById('parthdn1');
+	
+	if (nik1.value == ""){
+		nik1.focus();
+	}
+	else if(idso1.value == ""){
+		idso1.focus();
+	}
+	else{
+		parthdn1.value = idbarcode1.value;   
+		idbarcode1.value = "";
+		idbarcode1.focus();
+	}
+	
+	
+	$('#scanissue').html(
+		'<p align="center" class="loading"><img src="img/load.gif" alt="loading" height="100" width="100"/></p>'
+	);
+	$.post('scanissue_tab_3.php', {so: $('[name=idso1]').val(), parthdn: $('[name=parthdn1]').val()},
+		function(result){
+			$('#scanissue').html(result).show();
+		}
+	);
+	return false;
+}
+
+function scanissue2(){
+	var nik1 = document.getElementById('nik1');
+	var parthdn1 = document.getElementById('parthdn1');
+	var idbarcode1 = document.getElementById('idbarcode1');
+	var idso1 = document.getElementById('idso1');
+	
+	parthdn1.value = idbarcode1.value;   
+	idbarcode1.value = "";
+	idbarcode1.focus();
+	
+	
+	$('#scanissue').html(
+		'<p align="center" class="loading"><img src="img/load.gif" alt="loading" height="100" width="100"/></p>'
+	);
+	$.post('scanissue_tab_3.php', {so: $('[name=idso1]').val(), parthdn: $('[name=parthdn1]').val()},
+		function(result){
+			$('#scanissue').html(result).show();
+		}
+	);
+	return false;
+}
+
+$(function(){
+	$("form input").keypress(function (e){
+		if((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)){
+			$('button[type=submit].default').click();
+			return false;
+		}
+		else{
+			return true;
+		}
+	});
+});
+
+function barcodeActive(){
+	if (document.getElementById('barcode1').checked) {
+        document.getElementById('scan').style.display = 'block';
+        document.getElementById('manual').style.display = 'none';
+    }
+    else {
+		document.getElementById('scan').style.display = 'none';
+        document.getElementById('manual').style.display = 'block';
+	}
+}*/
+</script>
+
+</head>
+<!-- <body onload="document.forms[0].so.focus();"> -->
+<body>
+
+<?php
+//IF ($_SERVER['REQUEST_METHOD'] != 'POST'){
+?>
+<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!-- <a href="index.php">menu</a><br /> -->
+	<form method="post" id="form1" onsubmit="scanissue2()">
+		<!--<INPUT type=radio name="barcode" id="barcode1" onclick="barcodeActive()" checked>BARCODE SCAN
+		<INPUT type=radio name="barcode" id="barcode2" onclick="barcodeActive()" >BARCODE MANUAL-->
+		
+		<br>NIK : <input type="text"	name="nik1"	id="nik1"/>
+		<br>SO NUMBER : <input type="text"	name="idso1"	id="idso1"/>
+		<br>BARCODE SCAN : <input type="text" name="idbarcode1" id="idbarcode1"/>
+		<br>PART NO : <input type="text" name="idbarcode2" id="idbarcode2"/>
+		<br>PO : <input type="text" name="po2" id="po2"/>
+		<br>QTY : <input type="text" name="qty2" id="qty2"/>		
+		<!--
+		<table>
+			<tr><td width="160px">NIK</td>			<td>:</td>	<td><input type="text"	name="nik1"	id="nik1"	class="kelas1"/></td></tr>
+			<tr><td width="160px">SO NUMBER</td>	<td>:</td>	<td><input type="text"	name="idso1"	id="idso1"	class="kelas1"/></td></tr>
+		</table>
+		<table  id="scan">
+			<tr><td width="160px">BARCODE SCAN</td><td>:</td><td><input type="text" name="idbarcode1" id="idbarcode1" class="kelas1"/></td></tr>
+		</table>
+		<table  id="manual" hidden>
+			<tr><td width="160px">PART NO</td><td>:</td><td><input type="text" name="idbarcode2" id="idbarcode2" class="kelas1"/></td></tr>
+			<tr><td width="160px">PO</td><td>:</td><td><input type="text" name="po2" id="po2" class="kelas1"/></td></tr>
+			<tr><td width="160px">QTY</td><td>:</td><td><input type="text" name="qty2" id="qty2" class="kelas1"/></td></tr>
+		</table>
+		-->
+		<button type="submit" name="submit" value="Submit" onclick="scanissue2()">SUBMIT</button>
+		<input type="text" name="parthdn1" id="parthdn1" />
+	<!--
+		SO NUMBER : <input type="text" name="so" id="idso" class="kelas1" /> <br>
+		BARCODE SCAN : <input type="text" name="barcode" id="idbarcode" class="kelas1" />
+	-->
+	</form>    
+<?php
+ //  }
+?>
+<div id="scanissue" onload="scanissue()"></div>
+</body>
+</html>

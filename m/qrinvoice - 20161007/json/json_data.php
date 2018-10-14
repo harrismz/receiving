@@ -1,0 +1,38 @@
+<?php
+	/*
+	****	create by Mohamad Yunus
+	****	on 6 Oct 2016
+	*/
+	
+	include('../con_mysql.php');
+	
+	
+	$rs 	= $db->Execute("select userid, supp, inv, part, po, qty, date_format(rcvdate, '%Y-%m-%d %T'), id from rectrx order by id desc limit 5");
+	$return = array();
+
+	for ($i = 0; !$rs->EOF; $i++) {
+		
+		$return[$i]['userid'] 	= trim($rs->fields['0']);
+		$return[$i]['supp'] 	= trim($rs->fields['1']);
+		$return[$i]['inv'] 		= trim($rs->fields['2']);
+		$return[$i]['part'] 	= trim($rs->fields['3']);
+		$return[$i]['po'] 		= trim($rs->fields['4']);
+		$return[$i]['qty'] 		= trim($rs->fields['5']);
+		$return[$i]['rcvdate'] 	= trim($rs->fields['6']);
+		$return[$i]['id'] 		= trim($rs->fields['7']);
+		
+		$rs->MoveNext();
+	}
+	
+	/*
+	$o = array(
+		"success"=>true,
+		"rows"=>$return);
+	*/
+	echo json_encode($return);
+		
+	
+	// Closing Database Connection
+	$rs->Close();
+	$db->Close();
+?>

@@ -1,0 +1,23 @@
+ #soNotReg {
+	 color:red;
+	 text-align:center;
+ }
+ p, #show_so{
+	 line-height: 50%;
+ }
+ 
+ #table_showpart, #td_right_showpart, #td_showpart, #th_showpart{
+	 border-collapse: collapse;
+	 border: 2px solid gray;
+ }
+ #td_right_showpart{
+	 text-align: right;
+ }
+ #td_right_showpart, #td_showpart{
+	 padding: 3px;
+ }
+ #th_showpart{
+	 text-align: center;
+	 padding: 8px;
+	 font-size: 25px;
+ }
