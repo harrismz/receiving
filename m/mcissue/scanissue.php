@@ -235,7 +235,7 @@ $tglins = $tanggal . ' ' . $wkt;
 								{
 									if($duplikat == 0)
 									{
-										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique')";
+										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid, label) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique','$varpartPost1')";
 										$hslins = $db->execute($sqlins);
 
 										$sqlsel = "select * from partiss where so = '$txtso' and partno = '$varpart' and partname = '$nilainama' and po = '$varpo' and bom = '$nilaibom' and reqqty = '$nilaireq' and scanqty = '$varqty' and lot = '$nilailot' and line = '$nilailine' and model = '$nilaimodel' and issdate = '$tglins' and nik = '$txtnik'";
@@ -314,7 +314,7 @@ $tglins = $tanggal . ' ' . $wkt;
 								{	
 									if($duplikat == 0)
 									{
-										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique')";
+										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid, label) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique','$varpartPost1')";
 										$hslins = $db->execute($sqlins);
 
 										$sqlsel = "select * from partiss where so = '$txtso' and partno = '$varpart' and partname = '$nilainama' and po = '$varpo' and bom = '$nilaibom' and reqqty = '$nilaireq' and scanqty = '$varqty' and lot = '$nilailot' and line = '$nilailine' and model = '$nilaimodel' and issdate = '$tglins' and nik = '$txtnik'";
@@ -477,7 +477,7 @@ $tglins = $tanggal . ' ' . $wkt;
 								{
 									if($duplikat == 0)
 									{
-										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique')";
+										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid, label) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique','$varpartPost1')";
 										$hslins = $db->execute($sqlins);
 
 										$sqlsel = "select * from partiss where so = '$txtso' and partno = '$varpart' and partname = '$nilainama' and po = '$varpo' and bom = '$nilaibom' and reqqty = '$nilaireq' and scanqty = '$varqty' and lot = '$nilailot' and line = '$nilailine' and model = '$nilaimodel' and issdate = '$tglins' and nik = '$txtnik'";
@@ -554,7 +554,7 @@ $tglins = $tanggal . ' ' . $wkt;
 								{
 									if($duplikat == 0)
 									{
-										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique')";
+										$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid,label) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique','$varpartPost1')";
 										$hslins = $db->execute($sqlins);
 
 										$sqlsel = "select * from partiss where so = '$txtso' and partno = '$varpart' and partname = '$nilainama' and po = '$varpo' and bom = '$nilaibom' and reqqty = '$nilaireq' and scanqty = '$varqty' and lot = '$nilailot' and line = '$nilailine' and model = '$nilaimodel' and issdate = '$tglins' and nik = '$txtnik'";

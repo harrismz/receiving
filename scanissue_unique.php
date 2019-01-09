@@ -192,7 +192,7 @@
 									echo "<br><h2 align='center'>Part OK...Inserting Data</h2>";
 
 									//	part OK
-											$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique')";
+											$sqlins = "insert into partiss(so,partno,partname,po,bom,reqqty,scanqty,lot,line,model,issdate, nik, uniqueid, label) values('$txtso','$varpart','$nilainama','$varpo','$nilaibom','$nilaireq','$varqty','$nilailot','$nilailine','$nilaimodel','$tglins','$txtnik','$varunique','$varpartPost1')";
 											$hslins = $db->execute($sqlins);
 
 											if($varunique != ''){
